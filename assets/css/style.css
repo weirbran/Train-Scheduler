@@ -1,0 +1,43 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: lightgray;
+}
+
+.jumbotron {
+  color: white;
+  background-color: #3366cc;
+  margin-bottom: 10px;
+}
+
+.currentTimeDisplay {
+  color: white;
+  background-color: #3366cc;
+  margin-bottom: 10px;
+}
+
+.card-header {
+  color: white;
+  background-color: #3366cc;
+}
+
+.btn {
+  background-color: #3366cc;
+}
+
+th,
+label {
+  font-weight: bold;
+}
+
+card {
+  margin-top: 5px;
+}
+
+.addTrain {
+  width: 105%;
+}
+
+#schedule,
+th {
+  text-align: center;
+}
