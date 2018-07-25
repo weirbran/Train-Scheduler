@@ -44,14 +44,18 @@ $(document).ready(function() {
       .val()
       .trim();
 
-    //Pushes the user input values to the database
-    database.ref().push({
-      name: trainName,
-      destination: destinationName,
-      time: firstTrainTime,
-      frequency: frequency,
-      dateAdded: firebase.database.ServerValue.TIMESTAMP
-    });
+    if (frequency < 0 || firstTrainTime < 0) {
+      alert("Frequency and First Train Time must have positive values");
+    } else {
+      //Pushes the user input values to the database
+      database.ref().push({
+        name: trainName,
+        destination: destinationName,
+        time: firstTrainTime,
+        frequency: frequency,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+      });
+    }
 
     // Clears all of the text-boxes
     $(
@@ -66,25 +70,26 @@ $(document).ready(function() {
       //Storing the childSnapshot.val() in a variable for convenience
       var trainData = childSnapshot.val();
 
-      //Calculate the time of the next train arrival
-      //Calcutlate difference in time between current time and time of first train in UNIX, and convert to minutes
+      //Series of step to calculate the time of the next train arrival
+      //Calculate difference in time between the current time and the first train time in UNIX, and convert to minutes
       var trainTimeDifference = moment().diff(
         moment.unix(trainData.time),
         "minutes"
       );
 
-      //Get the remainder of time by using 'moderator' with the frequency & time difference
-      var timeRemainder = trainTimeDifference % trainData.frequency;
+      //Get the remainder of time, i.e., how many times your frequency fits into the time difference, by using 'moderator' with the frequency & time difference
+      //How many times the train is going to arrive in that period of time
+      var timeRemaining = trainTimeDifference % trainData.frequency;
 
-      //Subtract the remainder from the frequency
-      minutesAway = trainData.frequency - timeRemainder;
+      //Subtract the timeRemaining from the frequency to determine how many minutes away the next train is
+      minutesAway = trainData.frequency - timeRemaining;
 
-      //Add minutesAway to now, to find next train & convert to standard time format
+      //Add minutesAway to now, to find next train & convert to military time
       nextArrival = moment()
         .add(minutesAway, "m")
         .format("HH:mm");
 
-      //Print the user's input to the train schedule table
+      //Print the user's input and the calculated values to the train schedule table
       $("#schedule").append(
         "<tr><td>" +
           trainData.name +
