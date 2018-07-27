@@ -27,7 +27,7 @@ $(document).ready(function() {
 
   //When the user clicks submit
   $("#submit").on("click", function(event) {
-    //Prevents page from refreshing when submit button click
+    //Prevents page from refreshing
     event.preventDefault();
 
     //Grabs the input values from the text boxes
@@ -57,13 +57,13 @@ $(document).ready(function() {
       });
     }
 
-    // Clears all of the text-boxes
+    // Clears all of the text boxes
     $(
       "#trainNameInput, #destinationNameInput, #firstTrainTimeInput, #frequencyInput"
     ).val("");
   });
 
-  //Listen for changes to the database
+  //Listens for changes to the database
   database.ref().on(
     "child_added",
     function(childSnapshot) {
@@ -77,8 +77,7 @@ $(document).ready(function() {
         "minutes"
       );
 
-      //Get the remainder of time, i.e., how many times your frequency fits into the time difference, by using 'moderator' with the frequency & time difference
-      //How many times the train is going to arrive in that period of time
+      //Get the remainder of time (i.e., how many times the train is going to arrive in that period of time, or how many times the frequency fits into the time difference) by using modulus with the frequency & time difference
       var timeRemaining = trainTimeDifference % trainData.frequency;
 
       //Subtract the timeRemaining from the frequency to determine how many minutes away the next train is
